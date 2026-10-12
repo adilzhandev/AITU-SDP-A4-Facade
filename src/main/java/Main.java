@@ -79,5 +79,14 @@ public class Main {
                 "Total notifications: "
                         + orderFacade.getNotificationCount()
         );
+        System.out.println("\n=== SCENARIO 6: REPEATED CANCELLATION ===");
+
+        boolean cancelledAgain = orderFacade.cancelOrder(101);
+
+        System.out.println("Second cancellation: " + cancelledAgain);
+        System.out.println(
+                "Stock after second cancellation: "
+                        + orderFacade.getAvailableStock(laptop.getId())
+        );
     }
 }

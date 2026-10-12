@@ -42,6 +42,7 @@ public class OrderFacade {
         this.notification = Objects.requireNonNull(notification);
     }
 
+
     public boolean placeOrder(Order order) {
         Objects.requireNonNull(order, "Order cannot be null");
 
@@ -63,12 +64,14 @@ public class OrderFacade {
         boolean shipmentCreated = false;
 
         try {
+
             stockReserved = inventory.reserveItem(productId, quantity);
 
             if (!stockReserved) {
                 order.setStatus(OrderStatus.FAILED);
                 return false;
             }
+
 
             double totalAmount =
                     order.getProduct().getPrice() * quantity;
@@ -77,26 +80,16 @@ public class OrderFacade {
                     payment.processPayment(orderId, totalAmount);
 
             if (!paymentCompleted) {
-                rollbackOrder(
-                        order,
-                        stockReserved,
-                        paymentCompleted,
-                        shipmentCreated
-                );
-                return false;
+                throw new IllegalStateException("Payment declined");
             }
+
 
             shipmentCreated = shipping.createShipment(orderId);
 
             if (!shipmentCreated) {
-                rollbackOrder(
-                        order,
-                        stockReserved,
-                        paymentCompleted,
-                        shipmentCreated
-                );
-                return false;
+                throw new IllegalStateException("Shipment creation failed");
             }
+
 
             order.setStatus(OrderStatus.CONFIRMED);
             orders.put(orderId, order);
@@ -106,11 +99,18 @@ public class OrderFacade {
                     "Order processing failed: " + exception.getMessage()
             );
 
+
+            boolean paymentNeedsRollback =
+                    paymentCompleted || payment.getPaymentStatus(orderId);
+
+            boolean shipmentNeedsRollback =
+                    shipmentCreated || shipping.isShipped(orderId);
+
             rollbackOrder(
                     order,
                     stockReserved,
-                    paymentCompleted || payment.getPaymentStatus(orderId),
-                    shipmentCreated || shipping.isShipped(orderId)
+                    paymentNeedsRollback,
+                    shipmentNeedsRollback
             );
 
             return false;
@@ -124,22 +124,24 @@ public class OrderFacade {
         return true;
     }
 
-    private void rollbackOrder(
+
+    private boolean rollbackOrder(
             Order order,
             boolean stockReserved,
             boolean paymentCompleted,
             boolean shipmentCreated
     ) {
         int orderId = order.getId();
+        boolean rollbackSuccessful = true;
 
         if (shipmentCreated) {
             try {
                 if (!shipping.cancelShipment(orderId)) {
-                    System.out.println(
-                            "Shipment rollback failed for order: " + orderId
-                    );
+                    rollbackSuccessful = false;
+                    System.out.println("Shipment rollback failed: " + orderId);
                 }
             } catch (RuntimeException exception) {
+                rollbackSuccessful = false;
                 System.out.println(
                         "Shipment rollback error: " + exception.getMessage()
                 );
@@ -149,11 +151,11 @@ public class OrderFacade {
         if (paymentCompleted) {
             try {
                 if (!payment.refundPayment(orderId)) {
-                    System.out.println(
-                            "Payment rollback failed for order: " + orderId
-                    );
+                    rollbackSuccessful = false;
+                    System.out.println("Payment rollback failed: " + orderId);
                 }
             } catch (RuntimeException exception) {
+                rollbackSuccessful = false;
                 System.out.println(
                         "Payment rollback error: " + exception.getMessage()
                 );
@@ -167,14 +169,22 @@ public class OrderFacade {
                         order.getQuantity()
                 );
             } catch (RuntimeException exception) {
+                rollbackSuccessful = false;
                 System.out.println(
                         "Inventory rollback error: " + exception.getMessage()
                 );
             }
         }
 
-        order.setStatus(OrderStatus.FAILED);
+        order.setStatus(
+                rollbackSuccessful
+                        ? OrderStatus.FAILED
+                        : OrderStatus.ROLLBACK_FAILED
+        );
+
+        return rollbackSuccessful;
     }
+
 
     public boolean cancelOrder(int orderId) {
         Order order = orders.get(orderId);
@@ -183,20 +193,26 @@ public class OrderFacade {
             return false;
         }
 
-        if (order.getStatus() != OrderStatus.CONFIRMED) {
+        if (order.getStatus() != OrderStatus.CONFIRMED
+                && order.getStatus() != OrderStatus.CANCELLATION_PENDING) {
             return false;
         }
 
+        order.setStatus(OrderStatus.CANCELLATION_PENDING);
+
         try {
-            if (!shipping.cancelShipment(orderId)) {
-                return false;
+            if (shipping.isShipped(orderId)) {
+                if (!shipping.cancelShipment(orderId)) {
+                    System.out.println("Shipment cancellation failed");
+                    return false;
+                }
             }
 
-            if (!payment.refundPayment(orderId)) {
-                System.out.println(
-                        "Refund failed for order: " + orderId
-                );
-                return false;
+            if (payment.getPaymentStatus(orderId)) {
+                if (!payment.refundPayment(orderId)) {
+                    System.out.println("Payment refund failed");
+                    return false;
+                }
             }
 
             inventory.releaseItem(
@@ -208,7 +224,7 @@ public class OrderFacade {
 
         } catch (RuntimeException exception) {
             System.out.println(
-                    "Order cancellation failed: " + exception.getMessage()
+                    "Cancellation failed: " + exception.getMessage()
             );
             return false;
         }
@@ -220,6 +236,7 @@ public class OrderFacade {
 
         return true;
     }
+
 
     public void addStock(int productId, int quantity) {
         inventory.addStock(productId, quantity);
