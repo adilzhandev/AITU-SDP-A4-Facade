@@ -83,4 +83,15 @@ src/test/java/shop/
   OrderFacadeTest.java
 ```
 
-UML and the written report will be added separately.
+## Report and UML
+
+- [Report in PDF](docs/Assignment_4_Facade_Report.pdf)
+- [Editable Word report](docs/Assignment_4_Facade_Report.docx)
+- [UML class diagram in PNG](docs/uml-class-diagram.png)
+- [UML class diagram in SVG](docs/uml-class-diagram.svg)
+- [Editable PlantUML source](docs/uml-class-diagram.puml)
+
+The report covers the design, six Clean Code principles with annotated source
+excerpts, test results, and the responsibilities hidden by the facade. The UML
+shows the client, facade, four services, and data records. It omits generated
+record constructors/accessors and the internal payment helper for readability.
