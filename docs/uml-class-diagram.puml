@@ -2,17 +2,25 @@
 top to bottom direction
 skinparam backgroundColor white
 skinparam shadowing false
-skinparam defaultFontName DejaVu Sans
+skinparam defaultFontName Arial
 skinparam defaultFontSize 24
 skinparam defaultFontStyle plain
 skinparam classFontSize 26
-skinparam classFontStyle plain
+skinparam classFontStyle bold
 skinparam classAttributeFontSize 24
 skinparam classAttributeFontStyle plain
 skinparam classAttributeIconSize 0
 skinparam classBackgroundColor white
-skinparam classBorderColor black
-skinparam arrowColor black
+skinparam classHeaderBackgroundColor #E8EEF5
+skinparam defaultFontColor #1F2A37
+skinparam classAttributeFontColor #1F2A37
+skinparam classFontColor #1F2A37
+skinparam legendBackgroundColor white
+skinparam legendBorderColor #9CA3AF
+skinparam legendFontColor #1F2A37
+skinparam legendFontStyle plain
+skinparam classBorderColor #1F2A37
+skinparam arrowColor #1F2A37
 skinparam linetype ortho
 hide circle
 
@@ -92,7 +100,7 @@ OrderFacade ..> Customer
 OrderFacade --> Order
 Order --> Customer
 legend bottom
-  Legend
+  <b>Legend</b>
   Solid arrow: reference. Dashed arrow: dependency.
   + public    - private    <u>method()</u> static method
 endlegend
