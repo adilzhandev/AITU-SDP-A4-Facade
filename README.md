@@ -58,6 +58,13 @@ Payments, shipments, and notifications are simulated in memory. No real payment,
 delivery, or email is sent. Data is reset on each run. The example is intended
 for a single-threaded console application.
 
+## Tests
+
+`make test` runs 12 checks for successful orders, payment/shipping/notification
+failure rollback, atomic reservations, cancellation, invalid inputs, immutable
+cart snapshots, and direct use of the subsystems. A failed check exits with an
+error; no external test framework is required.
+
 ## Structure
 
 ```text
