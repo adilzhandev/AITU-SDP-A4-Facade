@@ -4,22 +4,84 @@ skinparam backgroundColor white
 skinparam shadowing false
 skinparam defaultFontName DejaVu Sans
 skinparam defaultFontSize 24
-skinparam classFontSize 24
+skinparam defaultFontStyle plain
+skinparam classFontSize 26
+skinparam classFontStyle plain
+skinparam classAttributeFontSize 24
+skinparam classAttributeFontStyle plain
+skinparam classAttributeIconSize 0
 skinparam classBackgroundColor white
 skinparam classBorderColor black
 skinparam arrowColor black
 skinparam linetype ortho
-hide members
 hide circle
 
-class Main
-class OrderFacade
-class InventoryService
-class PaymentProcessor
-class ShippingService
-class NotificationService
-class Customer
-class Order
+class Main {
+    --
+    {static} + main()
+    {static} - printOrder()
+}
+
+class OrderFacade {
+    - inventory
+    - payments
+    - shipping
+    - notifications
+    - orders
+    --
+    + placeOrder()
+    + cancelOrder()
+}
+
+class Customer {
+    - name
+    - email
+    - address
+    --
+}
+
+class Order {
+    - id
+    - customer
+    - items
+    - totalCents
+    - status
+    --
+}
+
+class InventoryService {
+    - prices
+    - stock
+    - reservations
+    --
+    + reserve()
+    + release()
+    + getAvailableQuantity()
+}
+
+class PaymentProcessor {
+    - balances
+    - payments
+    --
+    + charge()
+    + refund()
+    + getBalance()
+}
+
+class ShippingService {
+    - shipments
+    --
+    + ship()
+    + cancel()
+    + hasShipment()
+}
+
+class NotificationService {
+    - messages
+    --
+    + send()
+    + getMessages()
+}
 
 Main ..> OrderFacade
 OrderFacade --> InventoryService
@@ -29,4 +91,9 @@ OrderFacade --> NotificationService
 OrderFacade ..> Customer
 OrderFacade --> Order
 Order --> Customer
+legend bottom
+  Legend
+  Solid arrow: reference. Dashed arrow: dependency.
+  + public    - private    <u>method()</u> static method
+endlegend
 @enduml

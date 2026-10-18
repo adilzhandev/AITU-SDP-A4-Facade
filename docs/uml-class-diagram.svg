@@ -1,31 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1860" viewBox="0 0 1500 1860">
 <title>UML class diagram</title>
-<desc>Main depends on OrderFacade. OrderFacade references InventoryService, PaymentProcessor, ShippingService, NotificationService, and Order, and depends on Customer. Order references Customer.</desc>
+<desc>Eight classes with abbreviated field and method names. Constructors, method parameters and return types, generated record accessors, and nested helper types are omitted. Main depends on OrderFacade. OrderFacade references four services and Order, and depends on Customer. Order references Customer.</desc>
 <defs><marker id="arrow" markerWidth="18" markerHeight="18" refX="15" refY="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M 2 2 L 15 9 L 2 16" fill="none" stroke="#111111" stroke-width="2.5"/></marker></defs>
-<rect width="1600" height="1000" fill="white"/>
-<style>text{font-family:'DejaVu Sans',sans-serif;font-size:33px;fill:#111111}.edge{fill:none;stroke:#111111;stroke-width:2.5;marker-end:url(#arrow)}.dependency{stroke-dasharray:11 8}</style>
-<rect x="600" y="60" width="340" height="100" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="770.0" y="121.0" text-anchor="middle">Main</text>
-<rect x="560" y="350" width="420" height="110" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="770.0" y="416.0" text-anchor="middle">OrderFacade</text>
-<rect x="1190" y="100" width="300" height="110" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="1340.0" y="166.0" text-anchor="middle">Customer</text>
-<rect x="1190" y="350" width="300" height="110" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="1340.0" y="416.0" text-anchor="middle">Order</text>
-<rect x="20" y="820" width="350" height="110" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="195.0" y="886.0" text-anchor="middle">InventoryService</text>
-<rect x="420" y="820" width="350" height="110" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="595.0" y="886.0" text-anchor="middle">PaymentProcessor</text>
-<rect x="820" y="820" width="350" height="110" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="995.0" y="886.0" text-anchor="middle">ShippingService</text>
-<rect x="1220" y="820" width="350" height="110" fill="white" stroke="#111111" stroke-width="2.5"/>
-<text x="1395.0" y="886.0" text-anchor="middle">NotificationService</text>
-<path d="M 770 160 V 350" class="edge dependency"/>
-<path d="M 980 380 H 1060 V 155 H 1190" class="edge dependency"/>
-<path d="M 980 425 H 1190" class="edge"/>
-<path d="M 1340 350 V 210" class="edge"/>
-<path d="M 620 460 V 600 H 195 V 820" class="edge"/>
-<path d="M 720 460 V 680 H 595 V 820" class="edge"/>
-<path d="M 820 460 V 680 H 995 V 820" class="edge"/>
-<path d="M 920 460 V 600 H 1395 V 820" class="edge"/>
+<rect width="1500" height="1860" fill="white"/>
+<style>text{font-family:'DejaVu Sans',sans-serif;font-size:38px;font-weight:400;fill:#111111}.class-name{font-size:40px}.edge{fill:none;stroke:#111111;stroke-width:2.5;marker-end:url(#arrow)}.dependency{stroke-dasharray:11 8}</style>
+<rect x="60" y="20" width="400" height="230" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="260.0" y="69" class="class-name" text-anchor="middle">Main</text>
+<path d="M 60 90 H 460 M 60 130 H 460" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="82" y="175" class="" text-decoration="underline">+ main()</text>
+<text x="82" y="220" class="" text-decoration="underline">- printOrder()</text>
+<rect x="540" y="20" width="440" height="445" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="760.0" y="69" class="class-name" text-anchor="middle">OrderFacade</text>
+<path d="M 540 90 H 980 M 540 345 H 980" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="562" y="135" class="" >- inventory</text>
+<text x="562" y="180" class="" >- payments</text>
+<text x="562" y="225" class="" >- shipping</text>
+<text x="562" y="270" class="" >- notifications</text>
+<text x="562" y="315" class="" >- orders</text>
+<text x="562" y="390" class="" >+ placeOrder()</text>
+<text x="562" y="435" class="" >+ cancelOrder()</text>
+<rect x="1080" y="20" width="360" height="275" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="1260.0" y="69" class="class-name" text-anchor="middle">Customer</text>
+<path d="M 1080 90 H 1440 M 1080 255 H 1440" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="1102" y="135" class="" >- name</text>
+<text x="1102" y="180" class="" >- email</text>
+<text x="1102" y="225" class="" >- address</text>
+<rect x="1080" y="380" width="360" height="365" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="1260.0" y="429" class="class-name" text-anchor="middle">Order</text>
+<path d="M 1080 450 H 1440 M 1080 705 H 1440" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="1102" y="495" class="" >- id</text>
+<text x="1102" y="540" class="" >- customer</text>
+<text x="1102" y="585" class="" >- items</text>
+<text x="1102" y="630" class="" >- totalCents</text>
+<text x="1102" y="675" class="" >- status</text>
+<rect x="60" y="850" width="620" height="400" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="370.0" y="899" class="class-name" text-anchor="middle">InventoryService</text>
+<path d="M 60 920 H 680 M 60 1085 H 680" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="82" y="965" class="" >- prices</text>
+<text x="82" y="1010" class="" >- stock</text>
+<text x="82" y="1055" class="" >- reservations</text>
+<text x="82" y="1130" class="" >+ reserve()</text>
+<text x="82" y="1175" class="" >+ release()</text>
+<text x="82" y="1220" class="" >+ getAvailableQuantity()</text>
+<rect x="820" y="850" width="620" height="355" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="1130.0" y="899" class="class-name" text-anchor="middle">PaymentProcessor</text>
+<path d="M 820 920 H 1440 M 820 1040 H 1440" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="842" y="965" class="" >- balances</text>
+<text x="842" y="1010" class="" >- payments</text>
+<text x="842" y="1085" class="" >+ charge()</text>
+<text x="842" y="1130" class="" >+ refund()</text>
+<text x="842" y="1175" class="" >+ getBalance()</text>
+<rect x="60" y="1320" width="620" height="310" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="370.0" y="1369" class="class-name" text-anchor="middle">ShippingService</text>
+<path d="M 60 1390 H 680 M 60 1465 H 680" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="82" y="1435" class="" >- shipments</text>
+<text x="82" y="1510" class="" >+ ship()</text>
+<text x="82" y="1555" class="" >+ cancel()</text>
+<text x="82" y="1600" class="" >+ hasShipment()</text>
+<rect x="820" y="1320" width="620" height="265" fill="white" stroke="#111111" stroke-width="2.5"/>
+<text x="1130.0" y="1369" class="class-name" text-anchor="middle">NotificationService</text>
+<path d="M 820 1390 H 1440 M 820 1465 H 1440" fill="none" stroke="#111111" stroke-width="2.5"/>
+<text x="842" y="1435" class="" >- messages</text>
+<text x="842" y="1510" class="" >+ send()</text>
+<text x="842" y="1555" class="" >+ getMessages()</text>
+<path d="M 460 140 H 540" class="edge dependency"/>
+<path d="M 980 150 H 1080" class="edge dependency"/>
+<path d="M 980 420 H 1080" class="edge"/>
+<path d="M 1260 380 V 295" class="edge"/>
+<path d="M 620 465 V 700 H 370 V 850" class="edge"/>
+<path d="M 760 465 V 810 H 1130 V 850" class="edge"/>
+<path d="M 560 465 V 650 H 20 V 1440 H 60" class="edge"/>
+<path d="M 940 465 V 790 H 1480 V 1440 H 1440" class="edge"/>
+<path d="M 60 1660 H 1440" fill="none" stroke="#111111" stroke-width="1.5"/>
+<text x="60" y="1698" class="" style="font-size:32px">Legend</text>
+<path d="M 80 1740 H 180" class="edge"/>
+<text x="205" y="1751" class="" style="font-size:32px">Reference</text>
+<path d="M 780 1740 H 880" class="edge dependency"/>
+<text x="905" y="1751" class="" style="font-size:32px">Dependency</text>
+<text x="80" y="1810" class="" style="font-size:32px">+ public</text>
+<text x="360" y="1810" class="" style="font-size:32px">- private</text>
+<text x="780" y="1810" class="" style="font-size:32px" text-decoration="underline">method()</text>
+<text x="960" y="1810" class="" style="font-size:32px">static method</text>
 </svg>

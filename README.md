@@ -93,5 +93,8 @@ src/test/java/shop/
 
 The report covers the design, six Clean Code principles with annotated source
 excerpts, test results, and the responsibilities hidden by the facade. The UML
-shows only class names and their relationships, including the client, facade,
-four services, and data records. Fields and methods are omitted for readability.
+shows the client, facade, four services, and data records with their fields,
+methods, and relationships. Members use regular text. Types, parameters,
+constructors, generated record accessors, and nested helper types are omitted
+for readability. The legend explains the arrows, visibility symbols, and static
+method notation.
