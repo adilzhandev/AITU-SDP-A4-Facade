@@ -1,0 +1,108 @@
+@startuml
+title Online Order Management — UML Class Diagram
+top to bottom direction
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 18
+skinparam classFontSize 22
+skinparam classBackgroundColor #FFFFFF
+skinparam classHeaderBackgroundColor #EEF3F8
+skinparam classBorderColor #42617D
+skinparam arrowColor #334155
+skinparam linetype ortho
+hide empty members
+
+class Main <<Client>> {
+    {static} + main(args: String[]): void
+    {static} - printOrder(order: Order): void
+}
+
+class OrderFacade <<Facade>> #DCECF6 {
+    - inventory: InventoryService
+    - payments: PaymentProcessor
+    - shipping: ShippingService
+    - notifications: NotificationService
+    - orders: Map<String, Order>
+    --
+    + OrderFacade(prices: Map<String, Long>, stock: Map<String, Integer>, customerBalances: Map<String, Long>)
+    ~ OrderFacade(inventory: InventoryService, payments: PaymentProcessor, shipping: ShippingService, notifications: NotificationService)
+    + placeOrder(cart: Map<String, Integer>, customer: Customer): Order
+    + cancelOrder(orderId: String): Order
+}
+
+class InventoryService {
+    - prices: Map<String, Long>
+    - stock: Map<String, Integer>
+    - reservations: Map<String, Map<String, Integer>>
+    --
+    + InventoryService(prices: Map<String, Long>, stock: Map<String, Integer>)
+    + reserve(orderId: String, items: Map<String, Integer>): long
+    + release(orderId: String): void
+    + getAvailableQuantity(product: String): int
+}
+
+class PaymentProcessor {
+    - balances: Map<String, Long>
+    - payments: Map<String, Payment>
+    --
+    + PaymentProcessor(balances: Map<String, Long>)
+    + charge(orderId: String, email: String, amountCents: long): void
+    + refund(orderId: String): void
+    + getBalance(email: String): long
+}
+
+class ShippingService {
+    - shipments: Map<String, String>
+    --
+    + ship(orderId: String, address: String): void
+    + cancel(orderId: String): void
+    + hasShipment(orderId: String): boolean
+}
+
+class NotificationService {
+    - messages: List<String>
+    --
+    + send(email: String, message: String): void
+    + getMessages(): List<String>
+}
+
+class Customer <<record>> {
+    - name: String
+    - email: String
+    - address: String
+}
+
+class Order <<record>> {
+    - id: String
+    - customer: Customer
+    - items: Map<String, Integer>
+    - totalCents: long
+    - status: Status
+}
+
+enum "Order.Status" as OrderStatus {
+    PLACED
+    CANCELLED
+}
+
+Main ..> OrderFacade
+OrderFacade --> InventoryService
+OrderFacade --> PaymentProcessor
+OrderFacade --> ShippingService
+OrderFacade --> NotificationService
+OrderFacade ..> Customer
+OrderFacade --> Order
+Order --> Customer : customer
+Order --> OrderStatus : status
+
+legend bottom
+  + public     - private     ~ package-private
+  Solid arrow: directed association. Dashed arrow: dependency.
+  Main methods are static. Record fields are final.
+  Record constructors/accessors and the internal Payment helper are omitted.
+  Selected dependencies shown. Services have no reference to OrderFacade.
+  Plain arrows do not imply composition or ownership.
+endlegend
+@enduml
